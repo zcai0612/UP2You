@@ -1,0 +1,133 @@
+---
+// Astro组件 - 更兼容MDX
+export interface Props {
+  items: any[];
+}
+
+const { items } = Astro.props;
+const uniqueId = Math.random().toString(36).substr(2, 9);
+---
+
+<div class="w-full">
+  <!-- 轮播容器 -->
+  <div class="flex items-center gap-4">
+    <!-- 左侧按钮 -->
+    <button
+      id={`prev-btn-${uniqueId}`}
+      class="flex-shrink-0 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-200"
+      aria-label="Previous image set"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+    
+    <!-- 图片内容区域 -->
+    <div class="flex-1">
+      <div id={`current-item-${uniqueId}`} class="flex flex-wrap gap-4 items-center w-full">
+        <!-- 内容将通过JavaScript动态更新 -->
+      </div>
+    </div>
+    
+    <!-- 右侧按钮 -->
+    <button
+      id={`next-btn-${uniqueId}`}
+      class="flex-shrink-0 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-200"
+      aria-label="Next image set"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </button>
+  </div>
+
+
+  <!-- 计数器 -->
+  <div id={`counter-${uniqueId}`} class="text-center mt-2 text-sm text-gray-600">
+    <!-- 计数器将通过JavaScript动态更新 -->
+  </div>
+</div>
+
+<script define:vars={{ items, uniqueId }}>
+  let currentIndex = 0;
+  const container = document.getElementById(`current-item-${uniqueId}`);
+  const counter = document.getElementById(`counter-${uniqueId}`);
+  const prevBtn = document.getElementById(`prev-btn-${uniqueId}`);
+  const nextBtn = document.getElementById(`next-btn-${uniqueId}`);
+
+  function renderCurrentItem() {
+    const currentItem = items[currentIndex];
+    
+    container.innerHTML = `
+      <div class="flex-1 min-w-[12rem]">
+        <div class="relative">
+          ${currentItem.left.type === 'video' 
+            ? `<video src="${currentItem.left.src}" muted loop playsinline autoplay controls style="width: 100%; height: 360px; object-fit: cover;"></video>`
+            : `<img src="${currentItem.left.src}" alt="${currentItem.left.alt}" style="width: 100%; height: 360px; object-fit: contain;">`
+          }
+          <span class="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
+            ${currentItem.left.caption}
+          </span>
+        </div>
+      </div>
+      
+      <div class="flex-1 min-w-[12rem]">
+        <div class="relative">
+          ${currentItem.middle.type === 'video' 
+            ? `<video src="${currentItem.middle.src}" muted loop playsinline autoplay controls style="width: 100%; height: 360px; object-fit: cover;"></video>`
+            : `<img src="${currentItem.middle.src}" alt="${currentItem.middle.alt}" style="width: 100%; height: 360px; object-fit: contain;">`
+          }
+          <span class="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
+            ${currentItem.middle.caption}
+          </span>
+        </div>
+      </div>
+      
+      <div class="flex-1 min-w-[12rem]">
+        <div class="relative">
+          ${currentItem.right.type === 'video' 
+            ? `<video src="${currentItem.right.src}" muted loop playsinline autoplay controls style="width: 100%; height: 360px; object-fit: cover;"></video>`
+            : `<img src="${currentItem.right.src}" alt="${currentItem.right.alt}" style="width: 100%; height: 360px; object-fit: contain;">`
+          }
+          <span class="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
+            ${currentItem.right.caption}
+          </span>
+        </div>
+      </div>
+    `;
+  }
+
+
+  function updateCounter() {
+    counter.textContent = `${currentIndex + 1} / ${items.length}`;
+  }
+
+  function goToSlide(index) {
+    currentIndex = index;
+    renderCurrentItem();
+    updateCounter();
+  }
+
+  function goToPrevious() {
+    currentIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
+    renderCurrentItem();
+    updateCounter();
+  }
+
+  function goToNext() {
+    currentIndex = currentIndex === items.length - 1 ? 0 : currentIndex + 1;
+    renderCurrentItem();
+    updateCounter();
+  }
+
+  // 绑定事件
+  prevBtn.addEventListener('click', goToPrevious);
+  nextBtn.addEventListener('click', goToNext);
+
+  // 初始化
+  renderCurrentItem();
+  updateCounter();
+
+  // 全局函数供指示器使用
+  window[`goToSlide_${uniqueId}`] = goToSlide;
+</script>

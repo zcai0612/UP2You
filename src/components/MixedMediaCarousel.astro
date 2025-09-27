@@ -1,0 +1,161 @@
+---
+// Astro组件 - 混合媒体轮播（支持视频和图片）
+export interface Props {
+  items: Array<{
+    type: 'video' | 'image';
+    source: string;
+    alt?: string;
+    caption?: string;
+  }>;
+}
+
+const { items } = Astro.props;
+const uniqueId = Math.random().toString(36).substr(2, 9);
+---
+
+<div class="w-full">
+  <!-- 轮播容器 -->
+  <div class="flex items-center gap-4">
+    <!-- 左侧按钮 -->
+    <button
+      id={`prev-btn-${uniqueId}`}
+      class="flex-shrink-0 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-200"
+      aria-label="Previous media"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+    
+    <!-- 媒体内容区域 -->
+    <div class="flex-1">
+      <div id={`current-media-${uniqueId}`} class="w-full">
+        <!-- 内容将通过JavaScript动态更新 -->
+      </div>
+    </div>
+    
+    <!-- 右侧按钮 -->
+    <button
+      id={`next-btn-${uniqueId}`}
+      class="flex-shrink-0 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-200"
+      aria-label="Next media"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- 指示器点 -->
+  <div id={`indicators-${uniqueId}`} class="flex justify-center gap-2 mt-4">
+    <!-- 指示器将通过JavaScript动态生成 -->
+  </div>
+
+  <!-- 计数器 -->
+  <div id={`counter-${uniqueId}`} class="text-center mt-2 text-sm text-gray-600">
+    <!-- 计数器将通过JavaScript动态更新 -->
+  </div>
+</div>
+
+<script define:vars={{ items, uniqueId }}>
+  let currentIndex = 0;
+  const container = document.getElementById(`current-media-${uniqueId}`);
+  const counter = document.getElementById(`counter-${uniqueId}`);
+  const indicators = document.getElementById(`indicators-${uniqueId}`);
+  const prevBtn = document.getElementById(`prev-btn-${uniqueId}`);
+  const nextBtn = document.getElementById(`next-btn-${uniqueId}`);
+
+  function renderCurrentMedia() {
+    const currentItem = items[currentIndex];
+    
+    if (currentItem.type === 'video') {
+      container.innerHTML = `
+        <div class="w-full">
+          <video 
+            src="${currentItem.source}" 
+            muted 
+            loop 
+            playsinline 
+            autoplay 
+            controls 
+            style="width: 100%; height: auto; max-height: 500px; object-fit: contain;"
+            class="rounded-lg shadow-lg"
+          ></video>
+          ${currentItem.caption ? `<p class="text-center mt-2 text-sm text-gray-600">${currentItem.caption}</p>` : ''}
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="w-full">
+          <img 
+            src="${currentItem.source}" 
+            alt="${currentItem.alt || ''}" 
+            style="width: 100%; height: auto; max-height: 500px; object-fit: contain;"
+            class="rounded-lg shadow-lg"
+          />
+          ${currentItem.caption ? `<p class="text-center mt-2 text-sm text-gray-600">${currentItem.caption}</p>` : ''}
+        </div>
+      `;
+    }
+  }
+
+  function updateCounter() {
+    counter.textContent = `${currentIndex + 1} / ${items.length}`;
+  }
+
+  function updateIndicators() {
+    indicators.innerHTML = items.map((_, index) => `
+      <button
+        onclick="window.goToSlide_${uniqueId}(${index})"
+        class="w-3 h-3 rounded-full transition-all duration-200 ${
+          index === currentIndex 
+            ? 'bg-gray-500/70' 
+            : 'bg-gray-300/50 hover:bg-gray-400/60'
+        }"
+        aria-label="Go to slide ${index + 1}"
+      ></button>
+    `).join('');
+  }
+
+  function goToSlide(index) {
+    currentIndex = index;
+    renderCurrentMedia();
+    updateCounter();
+    updateIndicators();
+  }
+
+  function goToPrevious() {
+    currentIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
+    renderCurrentMedia();
+    updateCounter();
+    updateIndicators();
+  }
+
+  function goToNext() {
+    currentIndex = currentIndex === items.length - 1 ? 0 : currentIndex + 1;
+    renderCurrentMedia();
+    updateCounter();
+    updateIndicators();
+  }
+
+  // 绑定事件
+  prevBtn.addEventListener('click', goToPrevious);
+  nextBtn.addEventListener('click', goToNext);
+
+  // 键盘导航
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      goToPrevious();
+    } else if (e.key === 'ArrowRight') {
+      goToNext();
+    }
+  });
+
+  // 初始化
+  renderCurrentMedia();
+  updateCounter();
+  updateIndicators();
+
+  // 全局函数供指示器使用
+  window[`goToSlide_${uniqueId}`] = goToSlide;
+</script>

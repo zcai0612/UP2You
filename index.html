@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UP2You</title>
+    <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        @media (prefers-color-scheme: dark) {
+            .astro-code,
+            .astro-code span {
+                color: var(--shiki-dark) !important;
+                font-style: var(--shiki-dark-font-style) !important;
+                font-weight: var(--shiki-dark-font-weight) !important;
+                text-decoration: var(--shiki-dark-text-decoration) !important;
+            }
+        }
+
+        body {
+            font-family: "Inter", "Noto Sans", sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+        }
+
+        .dark body {
+            background: #ffffff;
+        }
+
+        a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            font-size: 1.125rem;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .gradient-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 8s ease-in-out infinite;
+            font-family: 'Inter', 'Noto Sans', sans-serif;
+            font-weight: 700;
+            font-size: 4rem !important;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gradient-title {
+                font-size: 4rem !important;
+                line-height: 1.2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gradient-title {
+                font-size: 3rem !important;
+                line-height: 1.3;
+            }
+        }
+
+        .highlighted-section {
+            background: #ffffff;
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlighted-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe);
+            background-size: 300% 100%;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        h2 {
+            width: 100%;
+            font-size: 1.5rem !important;
+            font-weight: 900 !important;
+            background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.5rem;
+        }
+
+        .conference-title {
+            background: linear-gradient(135deg, #1e293b 0%, #475569 50%, #64748b 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin: 1rem 0;
+            position: relative;
+            text-align: center;
+        }
+
+        .conference-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            border-radius: 2px;
+        }
+
+        .carousel-btn {
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 50%;
+            padding: 12px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+        }
+
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 360px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-container img,
+        .image-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+
+        .carousel-counter {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body class="flex flex-col gap-6 items-center pt-8 pb-8 w-full text-zinc-900 dark:text-zinc-50">
+
+    <header class="flex flex-col gap-10 items-center mb-6 px-6 max-w-[60rem]">
+        <h1 class="gradient-title">UP2You</h1>
+        <h2 class="text-3xl text-center text-gray-600 dark:text-gray-400 font-bold">Fast Reconstruction of Yourself from Unconstrained Photo Collections</h2>
+        <div class="flex flex-col gap-6 items-center">
+            <div class="text-xl flex flex-wrap justify-center gap-x-1 gap-y-2 leading-relaxed">
+                <a href="https://github.com/zcai0612" class="text-red-600 hover:text-red-700 hover:underline font-semibold transition-colors duration-200">Zeyu Cai<sup class="text-blue-500 font-semibold">1,2</sup></a><span class="text-blue-600">,</span>
+                <a href="https://github.com/Ziyang-Li-AILab" class="text-blue-600 hover:text-blue-700 hover:underline font-medium transition-colors duration-200">Ziyang Li<sup class="text-blue-500 font-semibold">2</sup>,</a>
+                <a href="https://xiaobenli00.github.io" class="text-blue-600 hover:text-blue-700 hover:underline font-medium transition-colors duration-200">Xiaoben Li<sup class="text-blue-500 font-semibold">1</sup>,</a>
+                <a href="https://boqian-li.github.io" class="text-blue-600 hover:text-blue-700 hover:underline font-medium transition-colors duration-200">Boqian Li<sup class="text-blue-500 font-semibold">1</sup>,</a>
+                <a href="https://cislab.hkust-gz.edu.cn/members/zeyu-wang" class="text-blue-600 hover:text-blue-700 hover:underline font-medium transition-colors duration-200">Zeyu Wang<sup class="text-blue-500 font-semibold">3</sup>,</a>
+                <a href="https://jessezhang92.github.io" class="text-blue-600 hover:text-blue-700 hover:underline font-medium transition-colors duration-200">Zhenyu Zhang<sup class="text-blue-500 font-semibold">2,</sup><sup class="text-orange-500 font-bold">&#8224;</sup>,</a>
+                <a href="https://xiuyuliang.cn" class="text-blue-600 hover:text-blue-700 hover:underline font-medium transition-colors duration-200">Yuliang Xiu<sup class="text-blue-500 font-semibold">1,</sup><sup class="text-orange-500 font-bold">&#8224;</sup></a>
+            </div>
+            <div class="text-center space-y-2">
+                <p class="text-lg text-gray-700 dark:text-gray-300 font-medium"><sup class="text-blue-600 font-semibold">1</sup>Westlake University, <sup class="text-blue-600 font-semibold">2</sup>Nanjing University</p>
+                <p class="text-lg text-gray-700 dark:text-gray-300 font-medium"><sup class="text-blue-600 font-semibold">3</sup>The Hong Kong University of Science and Technology (Guangzhou)</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 font-medium italic mt-3"><sup class="text-orange-500 font-bold">&#8224;</sup> Shared Corresponding Author</p>
+            </div>
+            
+            <!-- Links Section -->
+            <div class="flex flex-row gap-4 justify-center mt-6">
+                <a href="#" class="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    arXiv
+                </a>
+                <a href="#" class="flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+                    </svg>
+                    Code (Coming Soon)
+                </a>
+            </div>
+            <!-- <p class="conference-title text-center">International Conference on Learning Representations (ICLR) 2026</p> -->
+        </div>
+    </header>
+
+   
+    <main class="px-6 max-w-[60rem] w-full">
+     
+        <div class="w-full flex justify-center mb-6">
+            <video class="w-full h-auto aspect-video rounded-lg" autoplay controls muted loop playsinline>
+                <source src="src/assets/teaser1.mp4" type="video/mp4" />
+            </video>
+        </div>
+
+        
+        <p class="text-lg w-full mb-6">
+            <b>UP2You</b> reconstructs high-quality textured meshes from unconstrained photos. Our approach effectively handles extremely unconstrained photo collections by rectifying them into orthogonal multi-view images and corresponding normal maps, enabling the reconstruction of detailed 3D clothed portraits.
+        </p>
+
+       
+        <figure class="w-full flex flex-col gap-2 items-center mb-6">
+            <div class="max-h-[35rem] object-contain flex justify-center w-full">
+                <img src="src/assets/teaser2.png" alt="" style="max-height: 35rem; object-fit: contain;" />
+            </div>
+        </figure>
+
+        <div style="width: 100%; height: 2px; background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe); background-size: 300% 100%; animation: gradientShift 8s ease-in-out infinite; margin: 2rem 0;"></div>
+
+        <!-- Abstract Section -->
+        <section class="w-full mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">Abstract</h2>
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border-l-4 border-blue-500">
+                <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 text-justify">
+                    We present UP2You, the first tuning-free solution for reconstructing high-fidelity 3D clothed portraits from extremely unconstrained in-the-wild 2D photos.
+                    Unlike previous approaches that require "clean" inputs (e.g., full-body images with minimal occlusions, or well-calibrated cross-view captures), UP2You directly processes raw, unstructured photographs, which may vary significantly in pose, viewpoint, cropping, and occlusion. 
+                    Instead of compressing data into tokens for slow online text-to-3D optimization, we introduce a <em>data rectifier</em> paradigm that efficiently converts unconstrained inputs into clean, orthogonal multi-view images in a single forward pass within seconds, simplifying the 3D reconstruction.
+                    Central to UP2You is a pose-correlated feature aggregation module (PCFA), that selectively fuses information from multiple reference images w.r.t. target poses, enabling better identity preservation and nearly constant memory footprint, with more observations.
+                    We also introduce a perceiver-based multi-reference shape predictor, removing the need for pre-captured body templates.
+                    Extensive experiments on 4D-Dress, PuzzleIOI, and in-the-wild captures demonstrate that UP2You consistently surpasses previous methods in both geometric accuracy (Chamfer-<span class="text-green-600 font-semibold">15%↓</span>, P2S-<span class="text-green-600 font-semibold">18%↓</span> on PuzzleIOI) and texture fidelity (PSNR-<span class="text-green-600 font-semibold">21%↑</span>, LPIPS-<span class="text-green-600 font-semibold">46%↓</span> on 4D-Dress). 
+                    UP2You is efficient (1.5 minutes per person), and versatile (supports arbitrary pose control, and training-free multi-garment 3D virtual try-on), making it practical for real-world scenarios where humans are casually captured.
+                    Both models and code will be released to facilitate future research on this underexplored task.
+                </p>
+            </div>
+        </section>
+
+        
+        <section class="highlighted-section !max-w-full !px-0 py-12 w-full mx-0 flex justify-center">
+            <div class="flex flex-col gap-6 items-center w-full max-w-[60rem] px-8">
+                <h2>Paradigm Differences Between Previous Works and UP2You </h2>
+                <div class="w-full flex justify-center">
+                    <video class="w-full h-auto aspect-video rounded-lg" autoplay controls muted loop playsinline>
+                        <source src="src/assets/difference.mp4" type="video/mp4" />
+                    </video>
+                </div>
+                
+                <p class="text-lg w-full">
+                    <b>Top:</b> Previous works like PuzzleAvatar and AvatarBooth compress unconstrained photos into implicit personal tokens and DreamBooth weights through fine-tuning, then generate 3D humans via SDS optimization. <br>
+                     <b>Bottom:</b> <b>UP2You</b> directly rectifies unconstrained photo collections into orthogonal view images and normals, then reconstructs textured human meshes, achieving superior quality while reducing processing time from 4 hours to 1.5 minutes.
+                </p>
+
+                <div style="width: 100%; height: 2px; background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe); background-size: 300% 100%; animation: gradientShift 8s ease-in-out infinite; margin: 2rem 0;"></div>
+                <h2>Our Results</h2>
+                
+               
+                <div id="carousel1" class="w-full">
+                    <div class="flex items-center gap-4">
+                        <button id="prev-btn-1" class="carousel-btn" aria-label="Previous image set">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="flex-1">
+                            <div id="current-item-1" class="flex flex-wrap gap-4 items-center w-full">
+                                
+                            </div>
+                        </div>
+                        <button id="next-btn-1" class="carousel-btn" aria-label="Next image set">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="counter-1" class="carousel-counter"></div>
+                </div>
+
+                
+                <div id="carousel2" class="w-full">
+                    <div class="flex items-center gap-4">
+                        <button id="prev-btn-2" class="carousel-btn" aria-label="Previous image set">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="flex-1">
+                            <div id="current-item-2" class="flex flex-wrap gap-4 items-center w-full">
+                                
+                            </div>
+                        </div>
+                        <button id="next-btn-2" class="carousel-btn" aria-label="Next image set">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="counter-2" class="carousel-counter"></div>
+                </div>
+
+                <h2>Pose-Dependent Correlation Maps</h2>
+                
+           
+                <div id="video-carousel" class="w-full">
+                    <div class="flex items-center gap-4">
+                        <button id="prev-btn-video" class="carousel-btn" aria-label="Previous video">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="flex-1">
+                            <div id="current-video" class="w-full">
+                                
+                            </div>
+                        </div>
+                        <button id="next-btn-video" class="carousel-btn" aria-label="Next video">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="counter-video" class="carousel-counter"></div>
+                </div>
+            </div>
+        </section>
+
+       
+        <section class="highlighted-section !max-w-full !px-0 py-12 w-full mx-0 flex justify-center">
+            <div class="flex flex-col gap-6 items-center w-full max-w-[60rem] px-8">
+                <h2>Related Work</h2>
+                <div class="w-full">
+                    <ul class="space-y-3 text-lg">
+                        <li>
+                            <a href="https://github.com/YuliangXiu/PuzzleAvatar" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                PuzzleAvatar: Assembly of Avatar from Unconstrained Photo Collections
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/zeng-yifei/AvatarBooth" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                AvatarBooth: High-Quality and Customizable 3D Human Avatar Generation
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/huanngzh/MV-Adapter" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                MV-Adapter: Multi-view Consistent Image Generation Made Easy
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/pengHTYX/PSHuman" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                PSHuman: Photorealistic Single-image 3D Human Reconstruction using Cross-Scale Multiview Diffusion
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/eth-ait/4d-dress" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                4D-DRESS: A 4D Dataset of Real-world Human Clothing with Semantic Annotations
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/ytrock/THuman2.0-Dataset" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                Function4D: Real-time Human Volumetric Capture from Very Sparse RGBD Sensors
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/DSaurus/Human4DiT" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                Human4DiT: 360-degree Human Video Generation with 4D Diffusion Transformer
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://custom-humans.github.io/" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                Learning Locally Editable Virtual Humans
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/SangHunHan92/2K2K" class="text-blue-600 hover:text-blue-800 hover:underline">
+                                High-fidelity 3D Human Digitization from Single 2K Resolution Images
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="public/carousel.js"></script>
+</body>
+</html>

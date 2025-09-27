@@ -1,0 +1,67 @@
+---
+interface GridItem {
+  src: string;
+  alt?: string;
+  caption?: string;
+  type: 'video' | 'image';
+  width?: string;  // 新增：自定义宽度，如 "300px", "50%", "auto"
+  height?: string; // 新增：自定义高度，如 "200px", "40vh", "auto"
+  scale?: number;  // 新增：缩放比例，如 0.8, 1.2
+}
+
+interface Props {
+  items: GridItem[];
+  containerHeight?: string; // 新增：容器总高度
+}
+
+const { items, containerHeight = "50vh" } = Astro.props as Props;
+---
+
+<div class="grid grid-cols-2 w-full" style={`height: ${containerHeight}; gap: 0;`}>
+  {items.map((item, index) => {
+    // 构建样式字符串 - 修复：移除 max-width/max-height 限制，让自定义尺寸生效
+    const containerStyle = `
+      width: ${item.width || '100%'};
+      height: ${item.height || '100%'};
+      transform: ${item.scale ? `scale(${item.scale})` : 'none'};
+      overflow: visible;
+    `;
+    
+    // 修复：移除 object-contain 类，让自定义尺寸生效
+    const mediaStyle = `
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    `;
+    
+    return (
+      <div class="relative" style="display: flex; align-items: center; justify-content: center; overflow: visible;">
+        <div style={containerStyle}>
+          {item.type === 'video' ? (
+            <video
+              style={mediaStyle}
+              autoplay
+              controls
+              muted
+              loop
+              playsinline
+            >
+              <source src={item.src} type="video/mp4" />
+            </video>
+          ) : (
+            <img 
+              src={item.src} 
+              alt={item.alt ?? ''} 
+              style={mediaStyle}
+            />
+          )}
+        </div>
+        {item.caption && (
+          <span class="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
+            {item.caption}
+          </span>
+        )}
+      </div>
+    );
+  })}
+</div>

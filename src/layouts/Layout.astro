@@ -1,0 +1,54 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description?: string;
+    favicon: string;
+    thumbnail?: string;
+  };
+}
+
+const { title, description, favicon, thumbnail } = Astro.props.frontmatter;
+const baseUrl = import.meta.env.BASE_URL;
+const prefix = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    {description && <meta name="description" content={description} />}
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="icon" type="image/svg+xml" href={prefix + favicon} />
+
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
+    {thumbnail && <meta property="og:image" content={prefix + thumbnail} />}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.css"
+      integrity="sha384-WsHMgfkABRyG494OmuiNmkAOk8nhO1qE+Y6wns6v+EoNoTNxrWxYpl5ZYWFOLPCM"
+      crossorigin="anonymous"
+    />
+
+    <title set:html={title}></title>
+  </head>
+  <body
+    class="flex flex-col gap-6 items-center pt-8 pb-8 w-full [&>*]:px-6 [&>*]:max-w-[60rem] [&>astro-island>*]:px-6 [&>astro-island>*]:max-w-[60rem] text-zinc-900 dark:text-zinc-50"
+  >
+    <slot />
+    <script src={prefix + "carousel.js"}></script>
+  </body>
+</html>

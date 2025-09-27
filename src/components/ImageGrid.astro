@@ -1,0 +1,36 @@
+---
+import type { ImageMetadata } from 'astro';
+import Image from './Image.astro';
+
+interface GridImage {
+  source: ImageMetadata | string;
+  altText?: string;
+}
+
+interface Props {
+  images: GridImage[];
+  columns?: number; // e.g., 3 for 3x3, 4 for 3x4
+  gap?: 1 | 2 | 3 | 4 | 6; // limited to known Tailwind gaps to avoid purge
+}
+
+const { images, columns = 3, gap = 2 } = Astro.props as Props;
+---
+
+<div class={`grid w-full ${columns === 2 ? 'grid-cols-2' : columns === 3 ? 'grid-cols-3' : columns === 4 ? 'grid-cols-4' : 'grid-cols-3'} ${gap === 1 ? 'gap-1' : gap === 2 ? 'gap-2' : gap === 3 ? 'gap-3' : gap === 4 ? 'gap-4' : 'gap-6'}`}>
+  {images.map((img) => (
+    typeof img.source === 'string' ? (
+      <img src={img.source} alt={img.altText ?? ''} class="w-full h-auto object-cover rounded" />
+    ) : (
+      <Image source={img.source} altText={img.altText ?? ''} />
+    )
+  ))}
+  
+  <style>
+    /* Ensure square-ish tiles for even look on grids */
+    img, :global(img.rounded) {
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+  </style>
+</div>
+

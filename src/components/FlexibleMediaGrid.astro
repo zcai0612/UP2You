@@ -1,0 +1,178 @@
+---
+interface MediaItem {
+  src: string;
+  alt?: string;
+  caption?: string;
+  type: 'video' | 'image';
+  width?: string;  // 如 "300px", "50%", "auto"
+  height?: string; // 如 "200px", "40vh", "auto"
+  scale?: number;  // 缩放比例，如 0.8, 1.2, 2.0
+  position?: 'left' | 'center' | 'right'; // 水平对齐
+}
+
+interface Props {
+  items: MediaItem[];
+  containerHeight?: string;
+  gap?: string; // 元素间距
+  gridLayout?: boolean; // 是否使用2x2网格布局
+}
+
+const { items, containerHeight = "80vh", gap = "1rem", gridLayout = true } = Astro.props as Props;
+---
+
+<div class={`flexible-media-container ${gridLayout ? 'grid-layout' : 'flex-layout'}`} style={`${containerHeight !== 'auto' ? `height: ${containerHeight};` : ''} ${!gridLayout ? `gap: ${gap};` : ''}`}>
+  {items.map((item, index) => {
+    // 构建容器样式
+    const containerStyle = `
+      width: ${item.width || '100%'};
+      height: ${item.height || '100%'};
+      transform: ${item.scale ? `scale(${item.scale})` : 'none'};
+      transform-origin: center;
+      display: flex;
+      align-items: center;
+      justify-content: ${item.position === 'left' ? 'flex-start' : item.position === 'right' ? 'flex-end' : 'center'};
+      overflow: visible;
+    `;
+    
+    // 媒体元素样式 - 允许超出边界
+    const mediaStyle = `
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      max-width: none;
+      max-height: none;
+    `;
+    
+    return (
+      <div class="media-item" style={containerStyle}>
+        <div class="media-wrapper" style="position: relative; overflow: visible;">
+          {item.type === 'video' ? (
+            <video
+              style={mediaStyle}
+              autoplay
+              controls
+              muted
+              loop
+              playsinline
+            >
+              <source src={item.src} type="video/mp4" />
+            </video>
+          ) : (
+            <img 
+              src={item.src} 
+              alt={item.alt ?? ''} 
+              style={mediaStyle}
+            />
+          )}
+          {item.caption && (
+            <span class="media-caption">
+              {item.caption}
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+<style>
+  /* 全局重置 */
+  .flexible-media-container * {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-sizing: border-box;
+  }
+  
+  /* 2x2网格布局 */
+  .flexible-media-container.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: min-content min-content;
+    width: 100%;
+    overflow: visible;
+    position: relative;
+    align-items: start;
+    justify-items: center;
+    row-gap: 0 !important;
+    column-gap: -2rem !important;
+    min-height: auto;
+  }
+  
+  /* 右侧列向下偏移 */
+  .flexible-media-container.grid-layout .media-item:nth-child(2),
+  .flexible-media-container.grid-layout .media-item:nth-child(4) {
+    transform: translateY(20px);
+  }
+  
+  /* 灵活布局（原来的flex布局） */
+  .flexible-media-container.flex-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow: visible;
+    position: relative;
+  }
+  
+  .media-item {
+    overflow: visible;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0;
+  }
+  
+  .media-wrapper {
+    overflow: visible;
+    position: relative;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0;
+  }
+  
+  .media-caption {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    z-index: 10;
+  }
+  
+  /* 确保媒体元素可以超出容器边界 */
+  .media-item video,
+  .media-item img {
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block;
+  }
+  
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    .flexible-media-container.grid-layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(4, 1fr);
+    }
+    
+    .flexible-media-container.flex-layout {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .media-item {
+      margin-bottom: 1rem;
+    }
+  }
+</style>

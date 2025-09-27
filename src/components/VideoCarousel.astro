@@ -1,0 +1,108 @@
+---
+// Astro组件 - 视频轮播
+export interface Props {
+  videos: any[];
+}
+
+const { videos } = Astro.props;
+const uniqueId = Math.random().toString(36).substr(2, 9);
+---
+
+<div class="w-full">
+  <!-- 轮播容器 -->
+  <div class="flex items-center gap-4">
+    <!-- 左侧按钮 -->
+    <button
+      id={`prev-btn-${uniqueId}`}
+      class="flex-shrink-0 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-200"
+      aria-label="Previous video"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+    
+    <!-- 视频内容区域 -->
+    <div class="flex-1">
+      <div id={`current-video-${uniqueId}`} class="w-full">
+        <!-- 内容将通过JavaScript动态更新 -->
+      </div>
+    </div>
+    
+    <!-- 右侧按钮 -->
+    <button
+      id={`next-btn-${uniqueId}`}
+      class="flex-shrink-0 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-200"
+      aria-label="Next video"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- 计数器 -->
+  <div id={`counter-${uniqueId}`} class="text-center mt-2 text-sm text-gray-600">
+    <!-- 计数器将通过JavaScript动态更新 -->
+  </div>
+</div>
+
+<script define:vars={{ videos, uniqueId }}>
+  let currentIndex = 0;
+  const container = document.getElementById(`current-video-${uniqueId}`);
+  const counter = document.getElementById(`counter-${uniqueId}`);
+  const prevBtn = document.getElementById(`prev-btn-${uniqueId}`);
+  const nextBtn = document.getElementById(`next-btn-${uniqueId}`);
+
+  function renderCurrentVideo() {
+    const currentVideo = videos[currentIndex];
+    
+    container.innerHTML = `
+      <div class="w-full">
+        <video 
+          src="${currentVideo.source}" 
+          muted 
+          loop 
+          playsinline 
+          autoplay 
+          controls 
+          style="width: 100%; height: auto; max-height: 500px; object-fit: contain;"
+          class="rounded-lg shadow-lg"
+        ></video>
+      </div>
+    `;
+  }
+
+  function updateCounter() {
+    counter.textContent = `${currentIndex + 1} / ${videos.length}`;
+  }
+
+  function goToSlide(index) {
+    currentIndex = index;
+    renderCurrentVideo();
+    updateCounter();
+  }
+
+  function goToPrevious() {
+    currentIndex = currentIndex === 0 ? videos.length - 1 : currentIndex - 1;
+    renderCurrentVideo();
+    updateCounter();
+  }
+
+  function goToNext() {
+    currentIndex = currentIndex === videos.length - 1 ? 0 : currentIndex + 1;
+    renderCurrentVideo();
+    updateCounter();
+  }
+
+  // 绑定事件
+  prevBtn.addEventListener('click', goToPrevious);
+  nextBtn.addEventListener('click', goToNext);
+
+  // 初始化
+  renderCurrentVideo();
+  updateCounter();
+
+  // 全局函数供指示器使用
+  window[`goToSlide_${uniqueId}`] = goToSlide;
+</script>

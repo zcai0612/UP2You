@@ -1,0 +1,16 @@
+---
+// Simple three-column layout matching TwoColumns style
+---
+
+<div class="flex flex-wrap gap-4 items-start w-full">
+  <div class="flex-1 min-w-[12rem]">
+    <slot name="left" />
+  </div>
+  <div class="flex-1 min-w-[12rem]">
+    <slot name="middle" />
+  </div>
+  <div class="flex-1 min-w-[12rem]">
+    <slot name="right" />
+  </div>
+</div>
+
