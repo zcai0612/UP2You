@@ -28,11 +28,13 @@
         body {
             font-family: "Inter", "Noto Sans", sans-serif;
             background: #ffffff;
+            color: #1f2937;
             min-height: 100vh;
         }
 
         .dark body {
             background: #ffffff;
+            color: #1f2937;
         }
 
         a {
@@ -47,6 +49,8 @@
         p {
             font-size: 1.125rem;
             width: 100%;
+            color: #374151;
+            line-height: 1.7;
         }
 
         h1 {
@@ -122,20 +126,14 @@
             width: 100%;
             font-size: 1.5rem !important;
             font-weight: 900 !important;
-            background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #1f2937;
             font-family: 'Inter', sans-serif;
             letter-spacing: -0.01em;
             margin-bottom: 1.5rem;
         }
 
         .conference-title {
-            background: linear-gradient(135deg, #1e293b 0%, #475569 50%, #64748b 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #475569;
             font-family: 'Inter', sans-serif;
             font-weight: 600;
             font-size: 1.2rem;
@@ -223,11 +221,11 @@
         }
     </style>
 </head>
-<body class="flex flex-col gap-6 items-center pt-8 pb-8 w-full text-zinc-900 dark:text-zinc-50">
+<body class="flex flex-col gap-6 items-center pt-8 pb-8 w-full">
 
     <header class="flex flex-col gap-10 items-center mb-6 px-6 max-w-[60rem]">
         <h1 class="gradient-title">UP2You</h1>
-        <h2 class="text-3xl text-center text-gray-600 dark:text-gray-400 font-bold">Fast Reconstruction of Yourself from Unconstrained Photo Collections</h2>
+        <h2 class="text-3xl text-center font-bold" style="color: #374151 !important;">Fast Reconstruction of Yourself from Unconstrained Photo Collections</h2>
         <div class="flex flex-col gap-6 items-center">
             <div class="text-xl flex flex-wrap justify-center gap-x-1 gap-y-2 leading-relaxed">
                 <a href="https://github.com/zcai0612" class="text-red-600 hover:text-red-700 hover:underline font-semibold transition-colors duration-200">Zeyu Cai<sup class="text-blue-500 font-semibold">1,2</sup></a><span class="text-blue-600">,</span>
@@ -239,9 +237,9 @@
                 <a href="https://xiuyuliang.cn" class="text-blue-600 hover:text-blue-700 hover:underline font-medium transition-colors duration-200">Yuliang Xiu<sup class="text-blue-500 font-semibold">1,</sup><sup class="text-orange-500 font-bold">&#8224;</sup></a>
             </div>
             <div class="text-center space-y-2">
-                <p class="text-lg text-gray-700 dark:text-gray-300 font-medium"><sup class="text-blue-600 font-semibold">1</sup>Westlake University, <sup class="text-blue-600 font-semibold">2</sup>Nanjing University</p>
-                <p class="text-lg text-gray-700 dark:text-gray-300 font-medium"><sup class="text-blue-600 font-semibold">3</sup>The Hong Kong University of Science and Technology (Guangzhou)</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400 font-medium italic mt-3"><sup class="text-orange-500 font-bold">&#8224;</sup> Shared Corresponding Author</p>
+                <p class="text-lg font-medium" style="color: #374151 !important;"><sup class="text-blue-600 font-semibold">1</sup>Westlake University, <sup class="text-blue-600 font-semibold">2</sup>Nanjing University</p>
+                <p class="text-lg font-medium" style="color: #374151 !important;"><sup class="text-blue-600 font-semibold">3</sup>The Hong Kong University of Science and Technology (Guangzhou)</p>
+                <p class="text-sm font-medium italic mt-3" style="color: #6b7280 !important;"><sup class="text-orange-500 font-bold">&#8224;</sup> Shared Corresponding Author</p>
             </div>
             
             <!-- Links Section -->
@@ -273,7 +271,7 @@
         </div>
 
         
-        <p class="text-lg w-full mb-6">
+        <p class="text-lg w-full mb-6" style="color: #374151 !important;">
             <b>UP2You</b> reconstructs high-quality textured meshes from unconstrained photos. Our approach effectively handles extremely unconstrained photo collections by rectifying them into orthogonal multi-view images and corresponding normal maps, enabling the reconstruction of detailed 3D clothed portraits.
         </p>
 
@@ -288,9 +286,9 @@
 
         <!-- Abstract Section -->
         <section class="w-full mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">Abstract</h2>
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border-l-4 border-blue-500">
-                <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 text-justify">
+            <h2 class="text-2xl font-bold mb-4 text-center" style="color: #1f2937 !important;">Abstract</h2>
+            <div class="bg-gray-50 rounded-lg p-6 border-l-4 border-blue-500">
+                <p class="text-lg leading-relaxed text-justify" style="color: #374151 !important;">
                     We present UP2You, the first tuning-free solution for reconstructing high-fidelity 3D clothed portraits from extremely unconstrained in-the-wild 2D photos.
                     Unlike previous approaches that require "clean" inputs (e.g., full-body images with minimal occlusions, or well-calibrated cross-view captures), UP2You directly processes raw, unstructured photographs, which may vary significantly in pose, viewpoint, cropping, and occlusion. 
                     Instead of compressing data into tokens for slow online text-to-3D optimization, we introduce a <em>data rectifier</em> paradigm that efficiently converts unconstrained inputs into clean, orthogonal multi-view images in a single forward pass within seconds, simplifying the 3D reconstruction.
@@ -313,7 +311,7 @@
                     </video>
                 </div>
                 
-                <p class="text-lg w-full">
+                <p class="text-lg w-full" style="color: #374151 !important;">
                     <b>Top:</b> Previous works like PuzzleAvatar and AvatarBooth compress unconstrained photos into implicit personal tokens and DreamBooth weights through fine-tuning, then generate 3D humans via SDS optimization. <br>
                      <b>Bottom:</b> <b>UP2You</b> directly rectifies unconstrained photo collections into orthogonal view images and normals, then reconstructs textured human meshes, achieving superior quality while reducing processing time from 4 hours to 1.5 minutes.
                 </p>
@@ -396,7 +394,7 @@
             <div class="flex flex-col gap-6 items-center w-full max-w-[60rem] px-8">
                 <h2>Related Work</h2>
                 <div class="w-full">
-                    <ul class="space-y-3 text-lg">
+                    <ul class="space-y-3 text-lg" style="color: #374151 !important;">
                         <li>
                             <a href="https://github.com/YuliangXiu/PuzzleAvatar" class="text-blue-600 hover:text-blue-800 hover:underline">
                                 PuzzleAvatar: Assembly of Avatar from Unconstrained Photo Collections
