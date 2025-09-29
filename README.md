@@ -1,1 +1,2 @@
-## <center>UP2You:</center><br /><center>Fast Reconstruction of Yourself from Unconstrained Photo Collections</center> 
+## <center>UP2You:</center>
+## <center>Fast Reconstruction of Yourself from Unconstrained Photo Collections</center> 
