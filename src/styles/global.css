@@ -12,8 +12,21 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-/* body styles are handled in index.html to avoid conflicts */
-/* Basic link and p styles are handled in index.html to avoid conflicts */
+body {
+  font-family: "Inter", "Noto Sans", sans-serif;
+  background: #ffffff;
+  min-height: 100vh;
+}
+
+.dark body {
+  background: #ffffff;
+}
+a {
+  @apply text-blue-500 dark:text-blue-300 hover:underline;
+}
+p {
+  @apply text-lg w-full;
+}
 h1 {
   @apply text-5xl text-center font-medium;
 }
@@ -91,7 +104,24 @@ h1 {
 }
 
 /* Enhanced Typography */
-/* h2 styles are handled in index.html to avoid conflicts */
+h2 {
+  @apply w-full text-3xl font-bold;
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+
+.dark h2 {
+  background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 h3 {
   @apply w-full text-xl font-bold;
@@ -104,7 +134,16 @@ h3 {
   color: #cbd5e1;
 }
 
-/* p styles are handled in index.html to avoid conflicts */
+p {
+  @apply text-lg w-full;
+  color: #475569;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.dark p {
+  color: #cbd5e1;
+}
 
 /* Enhanced Links */
 a {
