@@ -473,7 +473,7 @@ if __name__ == '__main__':
     args.add_argument("--rgb_adapter_path", type=str, default="pretrained_models/rgb_adapter.safetensors")
     args.add_argument("--feature_aggregator_path", type=str, default="pretrained_models/feature_aggregator.pt")
     args.add_argument("--normal_adapter_path", type=str, default="pretrained_models/normal_adapter.safetensors")
-    args.add_argument("--segment_model_name", type=str, default="briaai/RMBG-2.0")
+    args.add_argument("--segment_model_name", type=str, default="ZhengPeng7/BiRefNet")
     args.add_argument("--data_dir", type=str, required=True)
     args.add_argument("--output_dir", type=str, default="outputs")
     args.add_argument("--device", type=str, default="cuda")

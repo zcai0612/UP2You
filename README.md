@@ -7,6 +7,7 @@
 
 [![arXiv](https://img.shields.io/badge/Arxiv-2510.06219-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2509.24817) 
 [![Home Page](https://img.shields.io/badge/Project-Website-C27185.svg)](https://zcai0612.github.io/UP2You/) 
+[![X](https://img.shields.io/badge/@Zeyu%20Cai-black?logo=X)](https://x.com/ZeyuCai111168)
 
 [Zeyu Cai](https://zcai0612.github.io/),
 [Ziyang Li](https://github.com/Ziyang-Li-AILab/),
@@ -47,7 +48,7 @@ conda activate up2you
 pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu118
 
 # kaolin
-pip install kaolin==0.17.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.4.0_cu118.html
+pip install kaolin==0.17.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.4.1_cu118.html
 
 pip install -r requirements.txt
 
@@ -77,7 +78,7 @@ To run the inference pipeline, you can use the following command:
 ```bash
 python inference_low_gpu.py \
     --base_model_path stabilityai/stable-diffusion-2-1-base  \
-    --segment_model_name briaai/RMBG-2.0 \
+    --segment_model_name ZhengPeng7/BiRefNet \
     --data_dir examples \
     --output_dir outputs \
 ```
