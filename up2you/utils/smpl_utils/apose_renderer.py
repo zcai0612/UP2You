@@ -139,8 +139,8 @@ class AposeRenderer(nn.Module):
             body_pose=self.body_pose,
             betas=betas,
         )
-        vertices = res.vertices.squeeze(0).detach().cpu().numpy()
-        vertices = normalize_vertices(vertices, bound=0.9)
+        vertices_orig = res.vertices.squeeze(0).detach().cpu().numpy()
+        vertices = normalize_vertices(vertices_orig, bound=0.9)
         faces = self.body_model.faces
         
         vertices_copy = vertices.copy()
@@ -148,10 +148,6 @@ class AposeRenderer(nn.Module):
         
         vertex_colors = part_segm_to_vertex_colors(self.part_segmentation, vertices.shape[0])
         vertex_colors = torch.from_numpy(vertex_colors).float().to(self.device)
-        # vertex_colors = vertex_colors.unsqueeze(0)
-
-        # Apply Rotation
-        # vertices_copy = vertices_copy @ self.rotation_matrix.T
         
         vertices_tensor = torch.from_numpy(vertices_copy).float().to(self.device)
         faces_tensor = torch.from_numpy(faces_copy.astype(np.int32)).to(self.device)
@@ -160,8 +156,10 @@ class AposeRenderer(nn.Module):
 
         smpl_normals, smpl_semantics = self.render_ortho_views(mesh, height, width, normal_type, return_rgba=return_rgba, num_views=num_views)
 
+        vertices_orig_tensor = torch.from_numpy(vertices_orig).float().to(self.device)
+
         if return_mesh:
-            return smpl_normals, smpl_semantics, vertices_tensor, faces_tensor
+            return smpl_normals, smpl_semantics, vertices_orig_tensor, faces_tensor
         else:
             return smpl_normals, smpl_semantics
     
