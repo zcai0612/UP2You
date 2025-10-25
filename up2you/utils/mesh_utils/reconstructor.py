@@ -65,6 +65,10 @@ class Reconstructor:
 
         # for color projection
         self.weights = torch.Tensor([1., 0.4, 0.8, 1.0, 0.8, 0.4]).view(6,1,1,1).to(self.device)
+
+        # for rescale
+        self.mesh_center = None
+        self.mesh_scale = None
         
 
     def preprocess(self, normal_pils):
@@ -147,10 +151,11 @@ class Reconstructor:
             optim_mesh.f = faces
             torch.cuda.empty_cache() 
 
-
-        mesh_smpl.export(os.path.join(output_dir, "mesh_smpl.obj"))
         mesh_remeshed = trimesh.Trimesh(vertices=vertices.detach().cpu().numpy(), faces=faces.detach().cpu().numpy())
-        mesh_remeshed.export(os.path.join(output_dir, "mesh_remeshed.obj"))
+
+        verts_rescale = (vertices / self.mesh_scale) + self.mesh_center
+        mesh_remeshed_save = trimesh.Trimesh(vertices=verts_rescale.detach().cpu().numpy(), faces=faces.detach().cpu().numpy())
+        mesh_remeshed_save.export(os.path.join(output_dir, "mesh_remeshed.obj"))
         smpl_data = SMPLX()
         if replace_hand:
             hand_mask = torch.zeros(smpl_data.smplx_verts.shape[0], )
@@ -192,10 +197,10 @@ class Reconstructor:
         vertices = meshes.verts_packed().float()
         faces = meshes.faces_packed().long()
         colors = meshes.textures.verts_features_packed().float()
-        vertices = normalize_vertices(vertices)
+        verts_rescale = (vertices / self.mesh_scale) + self.mesh_center
 
         final_mesh_path = os.path.join(output_dir, "result_clr.obj")
-        save_mesh(final_mesh_path, vertices, faces, colors)
+        save_mesh(final_mesh_path, verts_rescale, faces, colors)
         return final_mesh_path
 
     def run(
@@ -209,7 +214,9 @@ class Reconstructor:
         smplx_mesh = Mesh.load_obj(smplx_obj_path)
         os.makedirs(output_dir, exist_ok=True)
         smplx_v, smplx_f = smplx_mesh.v, smplx_mesh.f
-        smplx_v = normalize_vertices(smplx_v, bound=self.scale*0.9)
+        smplx_v, center, scale = normalize_vertices(smplx_v, bound=self.scale*0.9, return_params=True)
+        self.mesh_center = center
+        self.mesh_scale = scale
         normal_masks, target_normals = self.preprocess(normal_pils)
         final_mesh = self.geometry_optimization(normal_masks, target_normals, smplx_v, smplx_f, output_dir, replace_hand)
         final_mesh_path = self.color_projection(final_mesh, color_pils, output_dir)
