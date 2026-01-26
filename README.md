@@ -3,6 +3,10 @@
   <a href="https://zcai0612.github.io/UP2You/">UP2You: Fast Reconstruction of Yourself from Unconstrained Photo Collections</a>
 </h2>
 
+<h2 align="center">
+ICLR 2026
+</h2>
+
 <h5 align="center">
 
 [![arXiv](https://img.shields.io/badge/Arxiv-2510.06219-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2509.24817) 
