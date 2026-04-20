@@ -1,0 +1,94 @@
+name: mv2shape
+tag: "mv2shape"
+exp_root_dir: "outputs"
+seed: 42
+
+data_cls: up2you.data.up2you_shape_data.MultiviewPuzzleDataModule
+data:
+  data_dir: ["data/2K2K.json", "data/CustomHumans.json", "data/Human4DiT.json", "data/THuman2.1.json", "data/4D-DRESS.json", "data/X_Humans.json"]
+  used_data_type: ["ref_rgbs", "target_shapes"]
+  ref_background_color: gray
+  target_background_color: gray
+  train_num_refs: 8
+  val_num_refs: 8
+
+  train_indices: [0, -1]
+  val_indices: [0, 16]
+  test_indices: [0, 16]
+
+  target_height: 768
+  target_width: 768
+
+  ref_height: 768
+  ref_width: 768
+
+  batch_size: 8
+  num_workers: 8
+
+system_cls: up2you.systems.mv2shape.MVPuzzleMV2ShapeSystem
+system:
+  check_train_every_n_steps: 100
+  cleanup_after_validation_step: true
+  cleanup_after_test_step: true
+  
+  pretrained_shape_predictor_name_or_path: null
+  human_model_path: "human_models/models/smplx/SMPLX_NEUTRAL.npz"
+  init_shape_predictor_kwargs:
+    embed_dim: 1024
+    depth: 2
+    trunk_depth: 2
+
+  init_image_encoder_kwargs: 
+    model_name: "dinov2_vitl14"
+    image_size: 518
+
+  train_shape_predictor: true
+  num_reference_image_range: [4, 8]
+  front_reference_prob: 0.0
+
+  batch_size: ${data.batch_size}
+
+  # optimizer definition
+  # you can set different learning rates separately for each group of parameters, but note that if you do this you should specify EVERY trainable parameters
+  optimizer:
+    name: AdamW
+    args:
+      lr: 5e-5
+      betas: [0.9, 0.999]
+      weight_decay: 0.01
+    params:
+      shape_predictor:
+        lr: 5e-5
+
+  scheduler:
+    name: SequentialLR
+    interval: step
+    schedulers:
+      - name: LinearLR
+        interval: step
+        args:
+          start_factor: 1e-4
+          end_factor: 1.0
+          total_iters: 3000
+      - name: ConstantLR
+        interval: step
+        args:
+          factor: 1.0
+          total_iters: 9999999
+    milestones: [2000]
+
+trainer:
+  max_epochs: 150
+  log_every_n_steps: 10
+  num_sanity_val_steps: 1
+  val_check_interval: 100
+  enable_progress_bar: true
+  precision: bf16-mixed
+  gradient_clip_val: 1.0
+  strategy: ddp_find_unused_parameters_true # deepspeed_stage_2
+  accumulate_grad_batches: 1
+
+checkpoint:
+  save_last: true # whether to save at each validation time
+  save_top_k: -1
+  every_n_epochs: 9999 # do not save at all for debug purpose

@@ -95,6 +95,10 @@ bash run.sh
 Here we provide an example, where `examples` is the folder of unconstrained photos and `outputs` is the output directory of generated results.
 
 
+### Training
+
+For training instructions, please refer to [TRAIN.md](TRAIN.md).
+
 ## Acknowledgements
 Our code is based on the following awesome repositories and datasets:
 
