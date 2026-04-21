@@ -13,11 +13,10 @@ from einops import rearrange
 from omegaconf import OmegaConf
 from PIL import Image
 
-from ..pipelines.pipeline_mvpuzzle_i2mv_sd21 import MVPuzzleI2MVSDPipeline
+from ..pipelines.pipeline_mvpuzzle_i2mv_sd21 import UP2YouI2MVSDPipeline
 from ..schedulers.scheduling_shift_snr import ShiftSNRScheduler
 from ..utils.core import find
 from ..utils.typing import *
-from diffusers import UNet2DConditionModel  
 from .base import BaseSystem
 from .utils import encode_prompt, vae_encode
 
@@ -96,13 +95,13 @@ class MVPuzzleI2MVSDSystem(BaseSystem):
                 self.cfg.pretrained_unet_name_or_path
             )
 
-        pipeline: MVPuzzleI2MVSDPipeline
+        pipeline: UP2YouI2MVSDPipeline
         unet = UNet2DConditionModel.from_pretrained(
             self.cfg.pretrained_model_name_or_path, subfolder="unet"
         )
 
         # Load all required components from the base stable diffusion model
-        pipeline = MVPuzzleI2MVSDPipeline.from_pretrained(
+        pipeline = UP2YouI2MVSDPipeline.from_pretrained(
             self.cfg.pretrained_model_name_or_path,
             unet=unet,
             **pipeline_kwargs,
@@ -136,7 +135,7 @@ class MVPuzzleI2MVSDSystem(BaseSystem):
         pipeline.scheduler = noise_scheduler
 
         # Prepare models
-        self.pipeline: MVPuzzleI2MVSDPipeline = pipeline
+        self.pipeline: UP2YouI2MVSDPipeline = pipeline
         self.vae = self.pipeline.vae.to(
             dtype=torch.float16 if self.cfg.use_fp16_vae else torch.float32
         )
