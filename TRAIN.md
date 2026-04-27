@@ -4,12 +4,11 @@
 
 ### 1.1 Download Training Data
 
-Training data is available on Baidu Netdisk:
+Training data is available on HuggingFace:
 
-- **Link**: [https://pan.baidu.com/s/1x8fBBM1Rp-dg00W-oF1NGw?pwd=uyxd](https://pan.baidu.com/s/1x8fBBM1Rp-dg00W-oF1NGw?pwd=uyxd)
-- **Password**: `uyxd`
+- **Link**: [https://huggingface.co/datasets/Co2y/UP2You_Dataset](https://huggingface.co/datasets/Co2y/UP2You_Dataset)
 
-Download and extract all sub-directories from the shared folder `UP2You_Data`.
+Download and extract all sub-directories from the dataset `UP2You_Dataset`.
 
 ### 1.2 Generate Data JSON Files
 

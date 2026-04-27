@@ -11,6 +11,7 @@ ICLR 2026
 
 [![arXiv](https://img.shields.io/badge/Arxiv-2510.06219-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2509.24817) 
 [![Home Page](https://img.shields.io/badge/Project-Website-C27185.svg)](https://zcai0612.github.io/UP2You/) 
+[![Dataset](https://img.shields.io/badge/🤗%20HuggingFace-Dataset-FFD21E.svg)](https://huggingface.co/datasets/Co2y/UP2You_Dataset)
 [![X](https://img.shields.io/badge/@Zeyu%20Cai-black?logo=X)](https://x.com/ZeyuCai111168)
 
 [Zeyu Cai](https://zcai0612.github.io/),
