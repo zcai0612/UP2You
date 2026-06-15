@@ -9,7 +9,7 @@ ICLR 2026
 
 <h5 align="center">
 
-[![arXiv](https://img.shields.io/badge/Arxiv-2510.06219-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2509.24817) 
+[![arXiv](https://img.shields.io/badge/Arxiv-2509.24817-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2509.24817) 
 [![Home Page](https://img.shields.io/badge/Project-Website-C27185.svg)](https://zcai0612.github.io/UP2You/) 
 [![Dataset](https://img.shields.io/badge/🤗%20HuggingFace-Dataset-FFD21E.svg)](https://huggingface.co/datasets/Co2y/UP2You_Dataset)
 [![X](https://img.shields.io/badge/@Zeyu%20Cai-black?logo=X)](https://x.com/ZeyuCai111168)
@@ -66,7 +66,7 @@ conda install pytorch3d-0.7.8-py310_cu118_pyt241.tar.bz2
 ```
 
 ### Download
-Download `pretrained_models` and `human_models` from huggingface [`Co2y/UP2You`](https://huggingface.co/Co2y/UP2You), and put them into the project directory. You can refer to following commands:
+Download `pretrained_models` and `human_models` from Huggingface [`Co2y/UP2You`](https://huggingface.co/Co2y/UP2You), and put them into the project directory. You can refer to following commands:
 ```Bash
 export HF_ENDPOINT="https://hf-mirror.com" # Optional
 
@@ -88,7 +88,7 @@ python inference_low_gpu.py \
     --output_dir outputs \
 ```
 
-or you can just use `run.sh`:
+Or you can just use `run.sh`:
 ```bash
 bash run.sh 
 ```
@@ -108,7 +108,7 @@ Our code is based on the following awesome repositories and datasets:
 
 
 
-We thank the authors for releasing their code and data !
+We thank the authors for releasing their code and data!
 
 We thank [Siyuan Yu](https://ysysimon.com/home) for the help in Houdini Simulation, [Shunsuke Saito](https://shunsukesaito.github.io/), [Dianbing Xi](https://scholar.google.com/citations?user=7H29mf4AAAAJ&hl=zh-CN&scioq=UP2You&oi=sra), [Yifei Zeng](https://zeng-yifei.github.io/) for the fruitful discussions, and the members of [Endless AI Lab](https://xiuyuliang.cn/group.html) for their help on data capture and discussions.
 
@@ -117,10 +117,10 @@ We thank [Siyuan Yu](https://ysysimon.com/home) for the help in Houdini Simulati
 If you find our work useful, please cite:
 
 ```bibtex
-@inproceedings{cai2025up2you,
+@inproceedings{cai2026up2you,
   title={{UP2You: Fast Reconstruction of Yourself from Unconstrained Photo Collections}},
   author={Cai, Zeyu and Li, Ziyang and Li, Xiaoben and Li, Boqian and Wang, Zeyu and Zhang, Zhenyu and Xiu, Yuliang},
-  booktitle={{International Conference on Learning Representations (ICLR)}},
-  year={2026}
+  booktitle={{International Conference on Learning Representations}},
+  year={2026},
 }
 ```
